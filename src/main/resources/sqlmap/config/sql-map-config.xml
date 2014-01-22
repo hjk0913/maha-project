@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings enhancementEnabled="true" useStatementNamespaces="true" />
+	<typeAlias alias="box" type="com.bzfree.bzekbox.data.Box" />
+	
+	<sqlMap resource="sqlmap/sql/googleCrawler.xml" />
+	<sqlMap resource="sqlmap/sql/facebookCrawler.xml" />
+	<sqlMap resource="sqlmap/sql/twitterCrawler.xml" />
+</sqlMapConfig>

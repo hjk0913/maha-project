@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration 
+    xmlns:log4j="http://jakarta.apache.org/log4j/" 
+    debug="false">
+    
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %5p [%c] %m%n" />
+        </layout>   
+    </appender>
+    
+    <appender name="SQL_CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.SimpleLayout"/>
+    </appender>
+
+    <appender name="FRAMEWORK-INFO-DAILY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="C:/dev/log/framework-info.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%-17c] %m%n"/>
+        </layout>
+    </appender>
+    
+    <appender name="APP-INFO-DAILY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="C:/dev/log/app-info.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%-17c] %m%n"/>
+        </layout>
+    </appender>    
+    
+    <appender name="JDBC-TRACE-DAILY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="C:/dev/log/jdbc-trace.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%-17c] %m%n"/>
+        </layout>
+    </appender>    
+    
+    <appender name="EXECUTE-INFO-DAILY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="C:/dev/log/exec-info.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%-17c] %m%n"/>
+        </layout>
+    </appender>    
+    
+    <appender name="EXCEPTION-INFO-DAILY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="C:/dev/log/exception-info.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%-17c] %m%n"/>
+        </layout>
+    </appender>        
+   
+    <appender name="ACCESS-LOG-DAILY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="C:/dev/log/access-log.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p [%-17c] %m%n"/>
+        </layout>
+    </appender>
+
+	<logger name="com.ibatis" additivity="false">
+		<level value="DEBUG"/>		
+		<appender-ref ref="SQL_CONSOLE" />		
+	</logger>
+	
+	<logger name="java.sql" additivity="false">
+		<level value="DEBUG"/>
+		<appender-ref ref="SQL_CONSOLE" />
+	</logger>
+    
+    <logger name="iems" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="APP-INFO-DAILY"/>
+    </logger>
+        
+    <logger name="egovframework" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="FRAMEWORK-INFO-DAILY"/>
+    </logger>
+
+	<logger name="org.springframework" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="console" />
+		<appender-ref ref="FRAMEWORK-INFO-DAILY"/>
+	</logger>
+
+	<!-- log SQL with timing information, post execution -->
+	<logger name="jdbc.sqltiming" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="console" />
+		<appender-ref ref="JDBC-TRACE-DAILY"/>
+	</logger>
+	
+    <logger name="execinfoLogger" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="EXECUTE-INFO-DAILY"/>
+    </logger>
+
+    <logger name="exceptionLogger" additivity="false">
+        <level value="WARN"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="EXCEPTION-INFO-DAILY"/>
+    </logger>
+    
+    <logger name="aceessLogLogger" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="console"/>
+        <appender-ref ref="ACCESS-LOG-DAILY"/>
+    </logger>    
+    
+	<root>
+		<level value="OFF" />
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>

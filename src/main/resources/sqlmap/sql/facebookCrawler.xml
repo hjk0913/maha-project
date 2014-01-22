@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="facebookCrawler">
+	<insert id="insertDefiniteData" parameterClass="box">
+		INSERT INTO TB_DEFINITE_DATA 
+		(
+			USER_SEQ, 
+			DD_SEQ, 
+			SERVICE_TYPE, 
+			DDC_SEQ, 
+			DATA, 
+			REG_DATE, 
+			REG_ID
+		) 
+		VALUES 
+		(
+			#userSeq#, 
+			(SELECT T1.DD_SEQ FROM (SELECT IFNULL(MAX(DD_SEQ) + 1, '10000001') DD_SEQ FROM TB_DEFINITE_DATA) T1), 
+			#serviceId#, 
+			#dataType#, 
+			#data#, 
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			'SYSTEM'
+		)
+	</insert>
+	
+	<insert id="insertNonDefiniteData" parameterClass="box">
+		<![CDATA[
+		INSERT INTO TB_NON_DEFINITE_DATA
+		(
+			USER_SEQ, 
+			NDD_SEQ, 
+			SERVICE_TYPE, 
+			DATA, 
+			DATA_TYPE,
+			REG_DATE, 
+			REG_ID
+		) 
+		VALUES 
+		(
+			#userSeq#, 
+			(SELECT T1.NDD_SEQ FROM (SELECT IFNULL(MAX(NDD_SEQ) + 1, '10000001') NDD_SEQ FROM TB_NON_DEFINITE_DATA) T1), 
+			#serviceId#, 
+			#data#,
+			#dataType#,
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			'SYSTEM'
+		)
+		]]>
+	</insert>
+</sqlMap>

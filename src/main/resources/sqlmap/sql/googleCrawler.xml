@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap namespace="googleCrawler">
+	<select id="getUserData" resultClass="box">
+		<![CDATA[
+		SELECT 
+			CASE
+				WHEN COUNT(USER_NAME) < 1 THEN (SELECT IFNULL(MAX(USER_SEQ) + 1, 100000001) FROM TB_USER)	
+				WHEN COUNT(USER_NAME) > 0 THEN USER_SEQ
+			END AS USER_SEQ,
+			COUNT(USER_NAME) USER_CNT
+		FROM TB_USER WHERE USER_NAME = #gid#
+		]]>       
+	</select>
+	
+	<insert id="regeditUser" parameterClass="box">
+		INSERT INTO TB_USER
+		(
+			USER_SEQ,
+			USER_NAME,
+			REG_DATE,
+			REG_ID
+		)
+		VALUES
+		(
+			(SELECT T1.USER_SEQ FROM (SELECT IFNULL(MAX(USER_SEQ) + 1, '10000001') USER_SEQ FROM TB_USER) T1),
+			#gid#,
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			'SYSTEM'
+		)
+		<selectKey resultClass="int" keyProperty="key">
+			SELECT MAX(LAST_INSERT_ID(USER_SEQ)) FROM TB_USER
+		</selectKey>
+	</insert>
+	
+	<insert id="regeditUserAccount" parameterClass="box">
+		INSERT INTO TB_USER_ACCOUNT
+		(
+			USER_SEQ, 
+			USER_ACCOUNT_SEQ, 
+			SERVICE_ID, 
+			ACCOUNT_ID, 
+			ACCOUNT_PW, 
+			REG_DATE, 
+			REG_ID
+		) 
+		VALUES 
+		(
+			#userSeq#, 
+			(SELECT T1.USER_ACCOUNT_SEQ FROM (SELECT IFNULL(MAX(USER_ACCOUNT_SEQ) + 1, '10000001') USER_ACCOUNT_SEQ FROM TB_USER_ACCOUNT) T1), 
+			#serviceId#, 
+			#gid#, 
+			#gpw#, 
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			'SYSTEM'
+		)
+	</insert>
+	
+	<insert id="insertGoogleData" parameterClass="box">
+		INSERT INTO TB_USER_ACCOUNT
+		(
+			USER_SEQ, 
+			USER_ACCOUNT_SEQ, 
+			SERVICE_ID, 
+			ACCOUNT_ID, 
+			ACCOUNT_PW, 
+			REG_DATE, 
+			REG_ID
+		) 
+		VALUES 
+		(
+			#userSeq#, 
+			(SELECT T1.USER_ACCOUNT_SEQ FROM (SELECT IFNULL(MAX(USER_ACCOUNT_SEQ) + 1, '10000001') USER_ACCOUNT_SEQ FROM USER_ACCOUNT_SEQ) T1), 
+			#serviceId#, 
+			#gid#, 
+			#gpw#, 
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			'SYSTEM'
+		)
+	</insert>
+	
+	<insert id="insertNonDefiniteData" parameterClass="box">
+		INSERT INTO TB_NON_DEFINITE_DATA
+		(
+			USER_SEQ, 
+			NDD_SEQ, 
+			SERVICE_TYPE, 
+			DATA, 
+			DATA_TYPE,
+			REG_DATE, 
+			REG_ID
+		) 
+		VALUES 
+		(
+			#userSeq#, 
+			(SELECT T1.NDD_SEQ FROM (SELECT IFNULL(MAX(NDD_SEQ) + 1, '10000001') NDD_SEQ FROM TB_NON_DEFINITE_DATA) T1), 
+			#serviceId#, 
+			#data#,
+			#dataType#,
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			'SYSTEM'
+		)
+	</insert>
+</sqlMap>

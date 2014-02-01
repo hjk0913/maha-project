@@ -2,6 +2,7 @@ package com.maha.crawler.google.service;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.bzfree.bzekbox.data.Box;
@@ -10,6 +11,9 @@ import com.maha.crawler.google.dao.GoogleCrawlerDAO;
 
 @Service
 public class GoogleCrawlerServiceImpl implements GoogleCrawlerService {
+	
+	private static Logger logger = Logger.getLogger(GoogleCrawlerServiceImpl.class);
+	
 	
 	@Resource
 	private GoogleCrawlerDAO googleCrawlerDAO;
@@ -33,6 +37,7 @@ public class GoogleCrawlerServiceImpl implements GoogleCrawlerService {
 	
 	public void insertNonDefiniteData(BoxParam param) throws Exception {
 		param.put("dataType", "gmail");
+		logger.info("gmail::  " + param.getString("data"));
 		googleCrawlerDAO.insertNonDefiniteData(param);
 	}
 }

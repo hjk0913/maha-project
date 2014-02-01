@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <!-- Scheduler task -->
+   <bean name="schedulerTask" class="com.maha.schedule.SchedulerTask" />
+   <bean name="schedulerTask2" class="com.maha.schedule.SchedulerTask2" />
+
+   <!-- Scheduler job -->
+   <bean name="schedulerJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+     <property name="jobClass" value="com.maha.schedule.SchedulerJob" />
+     <property name="jobDataAsMap">
+        <map>
+          <entry key="schedulerTask" value-ref="schedulerTask" />
+         </map>
+      </property>
+   </bean>
+   <!-- Scheduler job2 -->
+   <bean name="schedulerJob2" class="org.springframework.scheduling.quartz.JobDetailBean">
+     <property name="jobClass" value="com.maha.schedule.SchedulerJob2" />
+     <property name="jobDataAsMap">
+        <map>
+          <entry key="schedulerTask2" value-ref="schedulerTask2" />
+         </map>
+      </property>
+   </bean>
+   
+
+   <!-- Cron Trigger -->
+   <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="schedulerJob" />
+    <property name="cronExpression" value="0/1 * * * * ?" />
+    </bean>
+   <!-- Cron Trigger2 -->
+   <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="schedulerJob2" />
+    <property name="cronExpression" value="0/1 * * * * ?" />
+    </bean>
+
+   <!-- Scheduler -->
+   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" destroy-method="destroy">
+    <property name="jobDetails">
+       <list>
+          <ref bean="schedulerJob" />
+       </list>
+    </property>
+    <property name="triggers">
+        <list>
+        	<ref bean="cronTrigger" />
+        </list>
+    </property>
+   </bean>
+
+   <!-- Scheduler -->
+   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" destroy-method="destroy">
+    <property name="jobDetails">
+       <list>
+          <ref bean="schedulerJob2" />
+       </list>
+    </property>
+    <property name="triggers">
+        <list>
+        	<ref bean="cronTrigger2" />
+        </list>
+    </property>
+   </bean>
+
+</beans>

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +30,8 @@ import com.maha.crawler.google.service.GoogleCrawlerService;
 @Controller
 @RequestMapping(value = "/google/")
 public class GoogleCrawlerController {
+	
+	private static Logger logger = Logger.getLogger(GoogleCrawlerController.class);
 	
 	@Resource
     private GoogleCrawlerService googleCrawlerService;
@@ -87,7 +90,6 @@ public class GoogleCrawlerController {
 			
 			//Input your mail account information, id, password
 			store.connect("imap.gmail.com", param.getString("gid"), param.getString("gpw"));
-			
 			//show folders' list
 			Folder[] f = store.getDefaultFolder().list();
 			for(Folder fd:f)
@@ -119,6 +121,7 @@ public class GoogleCrawlerController {
 		        MimeMultipart bodyMultipart;
 		        String ContentType[];
 
+		        
 		        for(int i = 0; i < message.length; i++){
 		        	
 		        	if(i == 10) break; // 테스트 코드
@@ -152,8 +155,7 @@ public class GoogleCrawlerController {
 			          	{
 			          		//System.out.println("Body: " +  bodyMultipart.getBodyPart(j).getContent().toString());
 			          		//System.out.println("Body ContentType : " + bodyMultipart.getBodyPart(j).getContentType().toString());
-			          		
-			          		param.put("data", bodyMultipart.getBodyPart(j).getContentType().toString());
+			          		param.put("data", bodyMultipart.getBodyPart(j).getContentType().toString().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
 			          	}
 		            }
 		            else if (ContentType[0].equals("multipart/RELATED"))
@@ -162,8 +164,7 @@ public class GoogleCrawlerController {
 			          	for (int j=0;j<bodyMultipart.getCount();j++)
 			          	{
 			          		//System.out.println("Body: " +  bodyMultipart.getBodyPart(j).getContent().toString());
-			          		
-			          		param.put("data", bodyMultipart.getBodyPart(j).getContent().toString());
+			          		param.put("data", bodyMultipart.getBodyPart(j).getContent().toString().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
 			          	}
 		            }
 		            else if (ContentType[0].equals("multipart/ALTERNATIVE"))
@@ -172,14 +173,12 @@ public class GoogleCrawlerController {
 			          	for (int j=0;j<bodyMultipart.getCount();j++)
 			          	{
 			          		//System.out.println("Body: " +  bodyMultipart.getBodyPart(j).getContent().toString());
-			          		
-			          		param.put("data", bodyMultipart.getBodyPart(j).getContent().toString());
+			          		param.put("data", bodyMultipart.getBodyPart(j).getContent().toString().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
 			          	}
 		            }
 		            else {
 		            	//System.out.println("Body: " +  message[i].getContent().toString());
-		            	
-		            	param.put("data", message[i].getContent().toString());
+		            	param.put("data", message[i].getContent().toString().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", ""));
 		          		
 		            }
 		            googleCrawlerService.insertNonDefiniteData(param);

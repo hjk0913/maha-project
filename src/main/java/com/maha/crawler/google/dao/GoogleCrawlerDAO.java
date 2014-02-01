@@ -1,15 +1,19 @@
 package com.maha.crawler.google.dao;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import com.bzfree.bzekbox.data.Box;
 import com.bzfree.bzekbox.data.BoxParam;
 import com.maha.common.dao.CommonDAO;
 import com.maha.common.dao.NameSpace;
+import com.maha.crawler.google.controller.GoogleCrawlerController;
 
 @NameSpace("googleCrawler")
 @Repository("googleCrawlerDAO")
 public class GoogleCrawlerDAO extends CommonDAO {
+	
+	
 	
 	public Box getUserData(BoxParam param) {
 		return (Box) getSqlMapClientTemplate().queryForObject(getNameSpace() + ".getUserData", param);

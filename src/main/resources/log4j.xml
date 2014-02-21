@@ -26,6 +26,7 @@
     <appender name="APP-INFO-DAILY" class="org.apache.log4j.DailyRollingFileAppender">
         <!-- <param name="file" value="C:/sts/workspace/maha/maha-project/src/main/webapp/log/app-info.log"/> -->
         <param name="file" value="C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps/logs/app-info.log"/>
+        <param name="encoding" value="UTF-8" />
         <param name="Append" value="true"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">

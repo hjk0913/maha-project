@@ -99,7 +99,7 @@ public class FacebookCrawlerController {
 		
 		// 사용자 계정정보 입력
 		param.put("gid", StringUtil.nvl(definiteData.getEmail()));
-		googleCrawlerService.regeditUserAccount(param);
+		//googleCrawlerService.regeditUserAccount(param);
 		
 //		
 //		System.out.println("===========================    getInterestedIn    ==========================");
@@ -110,7 +110,7 @@ public class FacebookCrawlerController {
 		
 		
 		// 사용자 정형 데이터 입력
-		facebookCrawlerService.insertDefiniteData(param);
+		//facebookCrawlerService.insertDefiniteData(param);
 		// 비정형 데이터 입력
 		// 피드리스트
 		logger.info("=============================    feed    ===================================");
@@ -435,6 +435,7 @@ public class FacebookCrawlerController {
 		for(int i = 0; i < home.size(); i++){
 			System.out.println("===============================================================");
 			System.out.println(home.get(i).getId() + "==home id");
+			System.out.println(home.get(i).getName() + "==home getName");
 			System.out.println(home.get(i).getDescription() + "==home getDescription");
 			System.out.println(home.get(i).getCaption() + "==home getCaption");
 			System.out.println(home.get(i).getMessage() + "==home getMessage");
@@ -465,6 +466,13 @@ public class FacebookCrawlerController {
 		
 		//Close처리
 		
+		ResponseList<Activity> activities = facebook.getActivities();
+		for(int k = 0; k < activities.size(); k++){
+			System.out.println(activities.get(k).getId());
+			System.out.println(activities.get(k).getName());
+			System.out.println(activities.get(k).getCategory());
+		}
+		
 		mav.setViewName("/twitter");
 		
 		return mav;
@@ -472,8 +480,8 @@ public class FacebookCrawlerController {
 	
 	public void insertNonDefiniteData(BoxParam param) throws Exception{
 		if(!StringUtil.nvl(param.getString("data")).equals("")) {
-			logger.info("facebook::  " + param.getString("dataType") + "::    " + param.getString("data"));
-			facebookCrawlerService.insertNonDefiniteData(param);
+			//logger.info("facebook::  " + param.getString("dataType") + "::    " + param.getString("data"));
+			//facebookCrawlerService.insertNonDefiniteData(param);
 		}
 	}
 	
